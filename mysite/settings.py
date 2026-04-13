@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'quanly',
+    
+    'django.contrib.humanize',# cái này để hiện thị giá tiền 30.000
 ]
 
 MIDDLEWARE = [
@@ -112,6 +114,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+USE_THOUSAND_SEPARATOR = True # Bật tính năng tự động ngăn cách hàng nghìn
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/

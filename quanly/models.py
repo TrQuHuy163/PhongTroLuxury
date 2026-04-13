@@ -9,7 +9,26 @@ class PhongTro(models.Model):
     tieu_de = models.CharField(max_length=200)       # Chữ ngắn
     mo_ta = models.TextField()                       # Chữ dài (nhiều dòng)
     gia_thue = models.IntegerField()                 # Số nguyên (Ví dụ: 3000000)
+
+    @property
+    def gia_thue_co_cham(self):
+        # Format số bằng dấu phẩy, sau đó thay thế dấu phẩy thành dấu chấm
+        if self.gia_thue:
+            return "{:,}".format(self.gia_thue).replace(',', '.')
+        return "0"
+
     dien_tich = models.FloatField()                  # Số thập phân (Ví dụ: 25.5 m2)
+
+    DANH_SACH_KHU_VUC = [
+        ('Hà Nội', 'Hà Nội'),
+        ('TPHCM', 'TPHCM'),
+        ('Đà Nẵng', 'Đà Nẵng'),
+        ('Kiên Giang', 'Kiên Giang'),
+        ('Thái Bình', 'Thái Bình'),
+        ('Hải Phòng', 'Hải Phòng'),
+    ]
+    khu_vuc = models.CharField(max_length=50, choices=DANH_SACH_KHU_VUC, default='Hà Nội')
+
     dia_chi = models.CharField(max_length=255)       # Chữ ngắn
     so_dien_thoai = models.CharField(max_length=15)  # Số điện thoại
     hinh_anh = models.ImageField(upload_to='phongtro/', null=True, blank=True) #hinh anh

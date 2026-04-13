@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load humanize %} 
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -148,8 +149,12 @@
                         <h3 class="text-xl font-bold text-gray-900 line-clamp-1">{{ phong.tieu_de }}</h3>
                     </div>
                     <div class="flex items-center text-gray-500 text-sm mb-4">
-                        <i class="fa-solid fa-location-dot mr-2"></i>
+                        <i class="#"></i>
                         <span class="line-clamp-1">{{ phong.dia_chi }}</span>
+                    </div>
+                    <div class="flex items-center text-gray-500 text-sm mb-4">
+                        <i class="fa-solid fa-location-dot mr-2"></i>
+                        <span class="line-clamp-1">{{ phong.khu_vuc }}</span>
                     </div>
                     
                     <div class="flex items-center gap-4 text-gray-600 text-sm mb-6 border-t border-gray-100 pt-4">
@@ -159,9 +164,10 @@
                     </div>
 
                     <div class="flex items-center justify-between mt-auto">
+                        
                         <div>
                             <span class="text-sm text-gray-500 block">Giá thuê</span>
-                            <span class="text-2xl font-bold text-blue-600">{{ phong.gia_thue }}đ<span class="text-sm font-normal text-gray-500">/tháng</span></span>
+                            <span class="text-2xl font-bold text-blue-600">{{ phong.gia_thue_co_cham }}đ<span class="text-sm font-normal text-gray-500">/tháng</span></span>
                         </div>
 
                         <a href="{% url 'chi_tiet_phong' phong.id %}" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-medium transition">Chi tiết</a>

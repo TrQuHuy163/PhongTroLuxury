@@ -36,7 +36,7 @@ def trang_chu(request): # hàm chỉnh sửa để tìm kiếm
     
     # Lọc theo Khu vực: Nếu có chọn khu vực, sẽ tìm những phòng mà "dia_chi" có chứa chữ đó
     if khu_vuc:
-        danh_sach_phong = danh_sach_phong.filter(dia_chi__icontains=khu_vuc)
+        danh_sach_phong = danh_sach_phong.filter(khu_vuc=khu_vuc)
 
     # Lọc theo Giá
     if gia == 'duoi_3':
