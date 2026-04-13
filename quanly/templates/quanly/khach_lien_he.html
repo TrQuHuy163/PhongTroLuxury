@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khách Liên Hệ - TuiKyCuc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <nav class="bg-white shadow-sm fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'trang_chu' %}" class="flex-shrink-0 flex items-center gap-2">
+                        <i class="fa-solid fa-house-chimney text-blue-600 text-2xl"></i>
+                        <span class="font-bold text-xl tracking-tight text-gray-900">TuiKyCuc</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Khách Hàng Liên Hệ</h1>
+                <p class="text-gray-500 mt-2">Quản lý các lời nhắn từ người muốn thuê phòng của bạn.</p>
+            </div>
+            <a href="{% url 'trang_chu' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2.5 rounded-lg font-medium transition shadow-sm flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for tin in danh_sach_tin %}
+            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition duration-300 border border-gray-100 flex flex-col">
+                <div class="flex items-center gap-4 border-b border-gray-100 pb-4 mb-4">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl shrink-0">
+                        {{ tin.ten_khach|make_list|first|upper }}
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-lg">{{ tin.ten_khach }}</h3>
+                        <div class="text-gray-500 text-sm"><i class="fa-regular fa-clock mr-1"></i> {{ tin.ngay_gui|date:"H:i - d/m/Y" }}</div>
+                    </div>
+                </div>
+
+                <div class="mb-4 flex-grow">
+                    <p class="text-gray-700 bg-gray-50 p-4 rounded-xl italic relative">
+                        <i class="fa-solid fa-quote-left text-gray-300 absolute top-2 left-2 opacity-50"></i>
+                        <span class="ml-4">{{ tin.noi_dung }}</span>
+                    </p>
+                </div>
+
+                <div class="mt-auto pt-4 border-t border-gray-100">
+                    <div class="text-sm text-gray-600 mb-3 truncate" title="{{ tin.phong.tieu_de }}">
+                        <span class="font-semibold">Hỏi phòng:</span> <a href="{% url 'chi_tiet_phong' tin.phong.id %}" class="text-blue-600 hover:underline">{{ tin.phong.tieu_de }}</a>
+                    </div>
+                    <a href="tel:{{ tin.so_dien_thoai }}" class="w-full block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 rounded-lg transition shadow-sm">
+                        <i class="fa-solid fa-phone mr-1"></i> Gọi lại: {{ tin.so_dien_thoai }}
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full bg-white p-12 rounded-2xl border border-gray-100 text-center shadow-sm">
+                <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-regular fa-envelope-open text-3xl text-blue-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Hộp thư trống</h3>
+                <p class="text-gray-500">Chưa có khách hàng nào để lại lời nhắn cho bạn.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>

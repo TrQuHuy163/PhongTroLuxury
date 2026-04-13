@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tin đăng - TuiKyCuc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <nav class="bg-white shadow-sm fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0 flex items-center gap-2">
+                        <i class="fa-solid fa-house-chimney text-blue-600 text-2xl"></i>
+                        <span class="font-bold text-xl tracking-tight text-gray-900">TuiKyCuc</span>
+                    </a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'trang_chu' %}" class="text-gray-600 hover:text-blue-600 font-medium transition">Trang chủ</a>
+                    
+                    {% if request.user.is_authenticated %}
+                        <div class="relative group cursor-pointer border-l pl-4 border-gray-300 py-5">
+                            <div class="flex items-center gap-2 text-gray-800 font-semibold hover:text-blue-600 transition">
+                                <i class="fa-regular fa-circle-user text-xl"></i>
+                                <span>Chào, {{ request.user.username }}!</span>
+                                <i class="fa-solid fa-chevron-down text-xs text-gray-500 transition-transform group-hover:rotate-180"></i>
+                            </div>
+
+                            <div class="absolute right-0 top-full mt-0 w-56 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                                <div class="p-2 space-y-1">
+                                    <a href="{% url 'quan_ly_tin' %}" class="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition flex items-center gap-3 font-medium">
+                                        <i class="fa-solid fa-list-check w-4"></i> Quản lý tin đăng
+                                    </a>
+                                    <a href="{% url 'khach_lien_he' %}" class="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition flex items-center gap-3 font-medium relative">
+                                        <i class="fa-solid fa-envelope-open-text w-4"></i> Khách liên hệ
+                                        <span class="absolute right-3 top-1/2 -translate-y-1/2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">Mới</span>
+                                    </a>
+                                    
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    
+                                    <a href="{% url 'dang_xuat' %}" class="block px-4 py-2.5 text-red-500 hover:bg-red-50 rounded-lg transition flex items-center gap-3 font-medium">
+                                        <i class="fa-solid fa-arrow-right-from-bracket w-4"></i> Đăng xuất
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <a href="{% url 'dang_tin' %}" class="bg-blue-600 text-white px-5 py-2.5 rounded-full font-medium hover:bg-blue-700 transition shadow-md flex items-center gap-2 ml-2">
+                        <i class="fa-solid fa-pen-to-square"></i> Đăng tin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Quản lý tin đã đăng</h1>
+                <p class="text-gray-500 mt-1">Bạn đang có <span class="font-bold text-blue-600">{{ danh_sach_cua_toi.count }}</span> tin đăng trên hệ thống.</p>
+            </div>
+            <a href="{% url 'dang_tin' %}" class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition shadow-md flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> Đăng tin mới
+            </a>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-gray-50 border-b border-gray-100">
+                    <tr>
+                        <th class="px-6 py-4 font-semibold text-gray-700 w-24">Hình ảnh</th>
+                        <th class="px-6 py-4 font-semibold text-gray-700">Tiêu đề / Địa chỉ</th>
+                        <th class="px-6 py-4 font-semibold text-gray-700 w-32">Giá thuê</th>
+                        <th class="px-6 py-4 font-semibold text-gray-700 text-center w-40">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {% for phong in danh_sach_cua_toi %}
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4">
+                            {% if phong.hinh_anh %}
+                                <img src="{{ phong.hinh_anh.url }}" class="w-20 h-16 object-cover rounded-md shadow-sm">
+                            {% else %}
+                                <div class="w-20 h-16 bg-gray-200 rounded-md flex items-center justify-center text-xs text-gray-400 shadow-sm">Trống</div>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="font-bold text-gray-900 mb-1 line-clamp-1">{{ phong.tieu_de }}</div>
+                            <div class="text-sm text-gray-500 flex items-center gap-1 line-clamp-1">
+                                <i class="fa-solid fa-location-dot text-gray-400"></i> {{ phong.dia_chi }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-blue-600 font-bold whitespace-nowrap">{{ phong.gia_thue }}đ</td>
+                        <td class="px-6 py-4">
+                            <div class="flex justify-center gap-4">
+                                <a href="{% url 'chinh_sua_tin' phong.id %}" class="text-yellow-500 hover:text-yellow-600 transition flex flex-col items-center gap-1">
+                                    <i class="fa-solid fa-pen-to-square text-lg"></i>
+                                    <span class="text-xs font-medium">Sửa</span>
+                                </a>
+                                <a href="{% url 'xoa_tin' phong.id %}" onclick="return confirm('Bạn có chắc chắn muốn xóa tin này vĩnh viễn không?');" class="text-red-500 hover:text-red-600 transition flex flex-col items-center gap-1">
+                                    <i class="fa-solid fa-trash text-lg"></i>
+                                    <span class="text-xs font-medium">Xóa</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center justify-center">
+                                <i class="fa-regular fa-folder-open text-5xl text-gray-300 mb-4"></i>
+                                <p class="text-gray-500 text-lg mb-2">Bạn chưa có tin đăng nào.</p>
+                                <a href="{% url 'dang_tin' %}" class="text-blue-600 font-semibold hover:underline">Hãy đăng tin đầu tiên ngay!</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-gray-300 py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-2xl font-bold text-white mb-4">TuiKyCuc</h3>
+            <p class="mb-4">Hệ thống tìm kiếm phòng trọ, căn hộ dịch vụ cao cấp số 1 Việt Nam.</p>
+            <div class="flex justify-center gap-4 text-xl">
+                <a href="https://www.facebook.com/profile.php?id=100028648551079" class="hover:text-blue-500 transition"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.instagram.com/_qh163/" class="hover:text-pink-500 transition"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@TUITÊNBÔ" class="hover:text-red-500 transition"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+            <p class="mt-8 text-sm text-gray-500">© TuiKyCuc. Đồ án Python - Quốc Huy.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

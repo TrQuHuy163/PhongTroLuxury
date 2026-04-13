@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        form p { margin-bottom: 1rem; }
+        form label { display: block; font-weight: 500; margin-bottom: 0.25rem; color: #374151; }
+        form input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; }
+        .helptext { font-size: 0.8rem; color: #6b7280; display: block; margin-top: 0.25rem; }
+        .errorlist { color: #dc2626; font-size: 0.875rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen py-10">
+
+    <div class="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
+        <div class="text-center mb-6">
+            <h2 class="text-3xl font-bold text-gray-900">Đăng Ký Tài Khoản</h2>
+            <p class="text-gray-500 mt-2">Bắt đầu tìm kiếm không gian sống lý tưởng</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl transition mt-4">
+                Tạo Tài Khoản
+            </button>
+        </form>
+        
+        <p class="text-center text-sm text-gray-600 mt-6">
+            Đã có tài khoản? <a href="{% url 'dang_nhap' %}" class="text-blue-600 font-semibold hover:underline">Đăng nhập</a>
+        </p>
+    </div>
+
+</body>
+</html>
